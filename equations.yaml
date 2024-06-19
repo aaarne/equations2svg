@@ -1,0 +1,115 @@
+shortcuts:
+  q: \bs{q}
+  qq: \bs{q}
+  xx: \bs{x}
+  vv: \bs{v}
+  JJ: \bs{J}
+  II: \bs{I}
+  MM: \bs{M}
+  KK: \bs{K}
+  DD: \bs{D}
+  AAA: \bs{A}
+  dqq: \dot{\bs{q}}
+  dxx: \dot{\bs{x}}
+  tran: ^{\mathsf{T}}
+  ttau: \bs{\tau}
+  ttheta: \bs{\theta}
+  ff: \bs{f}
+  xxi: \bs{\xi}
+  dxxi: \dot{\xxi}
+  vvarphi: \bs{\varphi}
+  fforce: \bs{f}
+
+# force_render: [vx]
+
+
+# Write equations as key value pairs. key will be the filename
+q1: q_1
+q2: q_2
+fkin: \xx = \bs{h}(\qq)
+degree_of_redundancy: r = n - m
+confspace: \qq \in \mathcal{Q}
+n: (n = \dim \mathcal{Q})
+taskspace: \xx \in \mathcal{M}
+m: (m = \dim \mathcal{M})
+x1: \xx_1
+x2: \xx_2
+A: \bs{A:}
+
+primary_coor: 
+  \b{x}_1 = \b{h}_1 (\qq)
+
+secondary_coor: 
+  \b{x}_2 = \b{h}_2 (\qq)
+
+primary_vel: 
+  \dqq   = \JJ_1^\#(\qq) \dxx_1
+
+secondary_vel: 
+  \dqq_N =  \bs{P}(\qq) \JJ_2^\#(\qq) \dxx_2
+
+proj: 
+  \bs{P}(\qq) = \II - \JJ_1^{\#A}(\qq)\JJ_1(\qq)
+
+projT: 
+  \bs{P}\tran(\qq) = \II - \JJ_1\tran(\qq){\JJ_1^{\#A}}\tran(\qq)
+
+pinv:
+  \JJ_1^{\#A} = \AAA^{-1}\JJ_1\tran(\JJ_1  \AAA^{-1} \JJ_1\tran)^{-1}
+
+primary_force:
+  \ttau   = \JJ_1\tran(\qq) \ff_1
+
+secondary_force:
+  \ttau_N =  \bs{P}\tran(\qq) \JJ_2\tran(\qq) \ff_2
+
+reddef:
+  n > m
+
+xi:
+  \xxi = \vvarphi(\qq)
+
+given:
+  \xx = f(\qq)
+
+cond_vel:
+  \JJ_x \JJ_{\xi}\tran = \b{0}
+
+cond_force:
+  \JJ_x \MM^{-1} \JJ_{\xi}\tran = \b{0}
+
+xdot:
+  \dxx = \JJ_x(\qq) \dqq
+
+xidot:
+  \dxxi = \JJ_{\xi}(\qq) \dqq
+
+xiparam:
+  \xxi_{\theta}(\qq)
+
+forallq:
+  \forall \qq \in \mathcal{Q}{:}
+
+jtheta:
+  \JJ_{\xi}(\qq) = \JJ_{\xi, \theta}(\qq) = \frac{\partial \xxi_\theta(\qq)}{\partial \qq}
+
+loss:
+  L(\q, \ttheta) = \frac{\lambda_1}{2mr}\sum\limits_{i=1}^{m} \sum\limits_{j=1}^{r} \left(\frac{\vv_{x,i}\tran \b{A}^{-1} \b{v}_{\xi,j}}{|\b{A}^{-1} \b{v}_{x,i}| \cdot |\b{v}_{\xi,j}|}\right)^2 + \frac{\lambda_2}{2\binom{r}{2}}\sum\limits_{i=1}^{r} \sum\limits_{j=1}^{r} \left[\left(\frac{\b{v}_{\xi,i}\tran \b{A}^{-1} \b{v}_{\xi,j}}{|\b{A}^{-1}\b{v}_{\xi,i}| \cdot |\b{v}_{\xi,j}|}\right)^2[i > j]\right]
+
+vx:
+  \JJ_x(\qq) = \begin{bmatrix}\vv_{x,1}\tran\\\vdots\\\vv_{x,m}\tran\end{bmatrix}
+
+vxi:
+  \JJ_{\xi,\theta}(\qq) = \begin{bmatrix}\vv_{\xi,1}\tran\\\vdots\\\vv_{\xi,r}\tran\end{bmatrix}
+
+eucl:
+  \text{Euclidean (} \AAA = \II \text{)   (Two Views)} 
+
+controller:
+  \ttau = \JJ_x\tran \fforce_x + \JJ_{\xi}\tran \fforce_{\xi}
+
+impedance_x:
+  \fforce_x = -\KK_x \left(\xx(\qq) - \xx_d\right) - \DD_x \JJ_x \dqq
+
+impedance_xi:
+  \fforce_{\xi} = -\KK_{\xi} \left(\xxi(\qq) - \xxi_d\right) - \DD_{\xi} \JJ_{\xi} \dqq
