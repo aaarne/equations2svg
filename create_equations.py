@@ -3,6 +3,19 @@ from latextools import LatexCommand
 import yaml
 import os
 from termcolor import colored
+import subprocess
+from pathlib import Path
+import pickle
+
+vcsfile = Path("vcs")
+
+if vcsfile.is_file():
+    with open(vcsfile, "rb") as f:
+        vcs = pickle.load(f)
+
+    print(f"{colored('vcs', 'yellow')}\tloaded")
+else:
+    vcs = {}
 
 def shortcut(short, long):
     cmd = r"\newcommand{\%s}{%s}" % (short, long)
@@ -37,8 +50,22 @@ for name, code in equations.items():
     elif name in forced_render:
         print(f"{colored("force", "red")}\t{name}\t==>\t{filename}")
     elif os.path.exists(filename):
-        print(f"{colored("skip", "green")}\t{name} (found {filename})")
-        continue
+        if name in vcs:
+            if vcs[name] == code and os.path.exists(filename):
+                print(f"{colored("skip", "green")}\t{name} (unchanged)")
+                continue
+            else:
+                print(f"{colored("render", "red")}\t{name}\t==>\t{filename} (code changed)")
+        else:
+            print(f"{colored("render", "red")}\t{name}\t==>\t{filename} (no record)")
     else:
-        print(f"{colored("render", "red")}\t{name}\t==>\t{filename}")
+            print(f"{colored("render", "red")}\t{name}\t==>\t{filename} (new)")
     render(filename, code)
+    vcs[name] = code
+    print(f"{colored("rasterize", "yellow")}\t{filename}")
+    cmd = ['inkscape', '--export-type=PNG', '--export-dpi=600', filename]
+    subprocess.run(cmd)
+
+with open("vcs", "wb") as f:
+    pickle.dump(vcs, f)
+    print(f"{colored('vcs', 'yellow')}\toveridden")
